@@ -30,7 +30,7 @@ async def douyin_setup(account_file_path, handle=False,account_id="",queue_id=""
 
 def cache_data(key:str,value:str,timeout=60)->None:
     if REDIS_CONF["password"]:
-        redis_client = redis.Redis(host=REDIS_CONF["host"], port=REDIS_CONF["port"], db=REDIS_CONF["select_db"],password=REDIS_CONF["password"])
+        redis_client = redis.Redis(host=REDIS_CONF["host"], port=REDIS_CONF["port"], db=REDIS_CONF["select_db"], password=REDIS_CONF["password"])
     else:
         redis_client = redis.Redis(host=REDIS_CONF["host"], port=REDIS_CONF["port"], db=REDIS_CONF["select_db"])
     redis_client.set(key, value)
@@ -67,14 +67,15 @@ async def douyin_cookie_gen(account_file_path,account_id="",queue_id=""):
             context = await browser.new_context()  # Pass any options
             # Pause the page, and start recording manually.
             page = await context.new_page()
-            await page.goto(url="https://creator.douyin.com/",timeout=20000)
+            await page.goto(url="https://creator.douyin.com/", timeout=20000)
             # await page.wait_for_url(url="https://creator.douyin.com/",timeout=10000)
             # await page.locator('span.login').click() 不需要点击了
             # base64搞定
             img_element = page.locator('div.account-qrcode-QvXsyd div.qrcode-image-QrGzx7 img:first-child')
             await img_element.wait_for()
-            img_element_src = await img_element.get_attribute(name="src",timeout=10000)
-            cache_data(f"douyin_login_ewm_{queue_id}",img_element_src)
+            img_element_src = await img_element.get_attribute(name="src", timeout=10000)
+            print(img_element_src)
+            cache_data(f"douyin_login_ewm_{queue_id}", img_element_src)
             # 截图然后返回给前端
             # await asyncio.sleep(3)  # 过3秒时间再截图
             # await page.screenshot(path=f"{account_id}_douyin_screenshot.png")
@@ -87,7 +88,7 @@ async def douyin_cookie_gen(account_file_path,account_id="",queue_id=""):
                 if 'creator.douyin.com/creator-micro/home' in page.url:
                     break
                 # 判断是否要身份认证
-                auth_div = page.get_by_text("身份验证")
+                auth_div = page.get_by_text("身份验证", exact=True)
                 auth_visible = await auth_div.is_visible()
                 if auth_visible:
                     # 说明需要验证码

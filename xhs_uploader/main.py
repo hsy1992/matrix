@@ -10,7 +10,7 @@ import traceback
 from PIL import Image
 from playwright.sync_api import sync_playwright
 from time import sleep
-from conf import BASE_DIR,REDIS_CONF, XHS_SERVER
+from conf import BASE_DIR, REDIS_CONF, XHS_SERVER
 from xhs import XhsClient
 from requests import RequestException
 

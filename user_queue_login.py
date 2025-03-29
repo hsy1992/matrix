@@ -9,7 +9,7 @@ from tencent_uploader.main import weixin_setup
 from xhs_uploader.main import xhs_setup
 from ks_uploader.main import ks_setup
 
-parser = argparse.ArgumentParser(description='这是一个获取登录状态的脚本。') 
+parser = argparse.ArgumentParser(description='这是一个获取登录状态的脚本。')
 parser.add_argument('type', type=int, default=1, help='登录类型:1:抖音;2:视频号;3:小红书;4:快手')
 args = parser.parse_args()
 type = args.type
@@ -23,6 +23,7 @@ db_connector = pymysql.connect(
     database=MYSQL_CONF['database'],
     autocommit=MYSQL_CONF['auto_commit'],
 )
+
 #查询数据库处理
 while True:
     try: 
